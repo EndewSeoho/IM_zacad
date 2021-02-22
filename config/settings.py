@@ -26,7 +26,8 @@ SECRET_KEY = '3mf@c1ln@mbzkt$=!3qs#zzs#vb4=4_2t!4s%8mez#uj#v-7ul'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1'
+    '3.35.86.93',
+    'localhost'
 ]
 
 
@@ -116,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'ASIA/Seoul'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
