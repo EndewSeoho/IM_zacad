@@ -14,6 +14,7 @@ import json
 class IMView(APIView):
     def post(self, request):
         insert_data = json.loads(request.body)
+        insert_code = insert_data.get('code')
         insert_q1 = insert_data.get('Q1')
         insert_a1 = insert_data.get('A1')
         # print(insert_q1)
@@ -34,7 +35,8 @@ class IMView(APIView):
 
         data_query_set = ImZacadQ1Bk.objects.all()
 
-        data_result = data_query_set.filter(zq_q1=insert_q1).all()
+        data_first_filter = data_query_set.filter(zq_code=insert_code).all()
+        data_result = data_first_filter.filter(zq_q1=insert_q1).all()
         data_result_serializer = Q1Serializer(data_result, many=True)
         # print(data_result_serializer.data[1]['zq_pk'])
         # print(data_result_serializer.data[1]['zq_q1'])
@@ -45,7 +47,7 @@ class IMView(APIView):
 
         for n in range(0, len(data_result)):
             data_idx_result.append(data_result_serializer.data[n]['zq_pk'])
-        # print(data_idx_result)
+        #print(data_idx_result)
 
         data_pos_all_result: List[List[str]] = []
 
@@ -61,7 +63,7 @@ class IMView(APIView):
                     data_pos_result.append(data_pos[j][0])
 
             data_pos_all_result.append(set(data_pos_result))
-        # print(data_pos_all_result)
+        #print(data_pos_all_result)
 
         zacad_result = []
         for k in range(0, len(data_pos_all_result)):
@@ -70,18 +72,18 @@ class IMView(APIView):
             similar = (len(intersection) / len(union)) * 100
             zacad_result.append((similar))
 
-        # print(max(zacad_result))
-        # print(zacad_result)
+        #print(max(zacad_result))
+        #print(zacad_result)
 
         data_all_result = dict(zip(zacad_result, data_idx_result))
-        # print(data_all_result)
+        #print(data_all_result)
         #print(data_all_result[max(zacad_result)])
 
         q2_query_set = ImZacadQ2Bk.objects.all()
 
         q2_result = q2_query_set.filter(zq_pk=data_all_result[max(zacad_result)]).all()
 
-        print(q2_result.values('zq_q2'))
+        #print(q2_result.values('zq_q2'))
 
         output = list(q2_result.values('zq_q2'))
 
